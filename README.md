@@ -41,7 +41,7 @@
 | AJ179 PRO | USB、2.4 GHz、藍牙 | 依公開協定實作，尚待本專案實機驗證。支援 X/Y 分軸與各檔指示色，USB 最高 1000 Hz，2.4 GHz 接收器提供最高 8000 Hz 的設定。 |
 | AJ179 V2 MAX | USB、2.4 GHz | 依公開協定實作，尚待本專案實機驗證。提供六個 DPI 儲存位置、X/Y 同步、機身燈效及移動同步。修改 DPI 檔色請使用 USB。 |
 
-頁面會依裝置實際回報的型號選擇通訊協定與產品照。照片配色是外觀示意。六鍵配置儲存在目前瀏覽器，各型號分開管理。
+頁面會依裝置回報的型號選擇通訊協定與產品照。在頁首的「機身顏色」選擇白色或黑色，首頁照片與按鍵位置圖會一起換色。這項外觀偏好由瀏覽器依型號記住，模擬與實機模式共用。滾輪燈色仍由 DPI 檔位與燈效設定控制。六鍵配置也儲存在目前瀏覽器，各型號分開管理。
 
 ## 在本機使用
 
@@ -67,8 +67,11 @@ python -m http.server 8000 --bind 127.0.0.1
 | 型號 | 本機檔名 | 來源 |
 | --- | --- | --- |
 | AJ199 白色 | `aj199-white.jpg` | [產品照片](https://cdn.shopify.com/s/files/1/0726/8528/9780/files/9_a2300fdc-7486-48b1-a5f4-0f788a1109ca.jpg?v=1714017706&width=940) |
-| AJ179 PRO | `aj179-pro.png` | [GearDB 產品照片](https://geardb.cn/api/v1/images/85c443a1-26b9-45e1-b274-58c2ad840c78.png) |
-| AJ179 V2 MAX | `aj179-v2-max.png` | [GearDB 產品照片](https://geardb.cn/api/v1/images/9b3ab62a-8a6f-466e-a0c3-9a0a9fc5970f.png) |
+| AJ199 黑色 | `aj199-black.jpg` | [產品照片](https://cdn.shopify.com/s/files/1/0726/8528/9780/files/10_5564463f-c005-4ecc-9ee0-027250d60b34.jpg?v=1714017706&width=1000) |
+| AJ179 PRO 黑色 | `aj179-pro.png` | [GearDB 產品照片](https://geardb.cn/api/v1/images/85c443a1-26b9-45e1-b274-58c2ad840c78.png) |
+| AJ179 PRO 白色 | `aj179-pro-white.png` | [AJAZZ 產品照片](https://ajazz.com.ua/sites/default/files/styles/product_image_l/public/products/3_82.png?itok=gRO6qqfw) |
+| AJ179 V2 MAX 黑色 | `aj179-v2-max.png` | [GearDB 產品照片](https://geardb.cn/api/v1/images/9b3ab62a-8a6f-466e-a0c3-9a0a9fc5970f.png) |
+| AJ179 V2 MAX 白色 | `aj179-v2-max-white.png` | [AJAZZ 產品照片](https://ajazz.com.ua/sites/default/files/styles/product_image_l/public/products/AJ179-V2-MAX-W%201.png?itok=_irn9vlp) |
 
 ## 授權
 

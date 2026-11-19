@@ -285,6 +285,13 @@ function setupDeviceUI() {
     url.searchParams.set("model",event.target.value);
     location.assign(url);
   };
+  for (const input of list("input[name=shell-color]")) {
+    input.onchange = () => {
+      shellChoices.set(modelId,input.value);
+      try { localStorage.setItem(shellKey(modelId),input.value); } catch { /* Keep the choice for this session. */ }
+      showShellColor(input.value);
+    };
+  }
   showModel(modelId);
   if (simulation) {
     $("mode-link").href = location.pathname;

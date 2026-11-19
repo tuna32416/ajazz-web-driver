@@ -1,23 +1,74 @@
 "use strict";
 
-// Reference photos: https://www.geardb.cn/mice/ajazz-aj179-pro
-// and https://www.geardb.cn/mice/ajazz-aj179-v2-max . They depict a model,
-// not a shell color reported by the device.
 const mouseModels = {
-  aj199:{name:"AJ199",sensor:"PAW3395",photo:"aj199-white.jpg",
-    photoUrl:"https://cdn.shopify.com/s/files/1/0726/8528/9780/files/9_a2300fdc-7486-48b1-a5f4-0f788a1109ca.jpg?v=1714017706&width=940",driver:AJ199,step:50,maxDpi:26000,
+  aj199:{name:"AJ199",sensor:"PAW3395",defaultShell:"white", photos:{
+    white:{file:"aj199-white.jpg", url:"https://cdn.shopify.com/s/files/1/0726/8528/9780/files/9_a2300fdc-7486-48b1-a5f4-0f788a1109ca.jpg?v=1714017706&width=940"},
+    black:{file:"aj199-black.jpg", url:"https://cdn.shopify.com/s/files/1/0726/8528/9780/files/10_5564463f-c005-4ecc-9ee0-027250d60b34.jpg?v=1714017706&width=1000"}
+  },driver:AJ199,step:50,maxDpi:26000,
     stages:6,debounce:30,description:"雙模電競滑鼠"},
-  "aj179-pro":{name:"AJ179 PRO",sensor:"PAW3395",photo:"aj179-pro.png",
-    photoUrl:"https://geardb.cn/api/v1/images/85c443a1-26b9-45e1-b274-58c2ad840c78.png",driver:AJ179Pro,step:50,maxDpi:26000,
+  "aj179-pro":{name:"AJ179 PRO",sensor:"PAW3395",defaultShell:"black", photos:{
+    black:{file:"aj179-pro.png", url:"https://geardb.cn/api/v1/images/85c443a1-26b9-45e1-b274-58c2ad840c78.png"},
+    white:{file:"aj179-pro-white.png", url:"https://ajazz.com.ua/sites/default/files/styles/product_image_l/public/products/3_82.png?itok=gRO6qqfw"}
+  },driver:AJ179Pro,step:50,maxDpi:26000,
     stages:8,debounce:10,description:"三模電競滑鼠"},
-  "aj179-v2-max":{name:"AJ179 V2 MAX",sensor:"PAW3311",photo:"aj179-v2-max.png",
-    photoUrl:"https://geardb.cn/api/v1/images/9b3ab62a-8a6f-466e-a0c3-9a0a9fc5970f.png",driver:AJ179Max,step:100,maxDpi:12000,
+  "aj179-v2-max":{name:"AJ179 V2 MAX",sensor:"PAW3311",defaultShell:"black", photos:{
+    black:{file:"aj179-v2-max.png", url:"https://geardb.cn/api/v1/images/9b3ab62a-8a6f-466e-a0c3-9a0a9fc5970f.png"},
+    white:{file:"aj179-v2-max-white.png", url:"https://ajazz.com.ua/sites/default/files/styles/product_image_l/public/products/AJ179-V2-MAX-W%201.png?itok=_irn9vlp"}
+  },driver:AJ179Max,step:100,maxDpi:12000,
     stages:6,debounce:255,description:"電競滑鼠"}
 };
 const modelQuery = new URLSearchParams(location.search);
 let modelId = modelQuery.get("mode") === "demo" && Object.hasOwn(mouseModels,modelQuery.get("model")) ?
   modelQuery.get("model") : "aj199";
 const currentModel = () => mouseModels[modelId];
+
+// Appearance is a browser preference shared by demo and device modes.
+const shellChoices = new Map();
+const shellKey = id => "ajazz.shell-color.v1." + id;
+function preferredShell(id) {
+  if (shellChoices.has(id)) return shellChoices.get(id);
+  let color;
+  try { color = localStorage.getItem(shellKey(id)); } catch { /* Session-only storage. */ }
+  const model = mouseModels[id];
+  return Object.hasOwn(model.photos,color) ? color : model.defaultShell;
+}
+
+let pendingShellPhoto;
+function showShellColor(color) {
+  const model = currentModel(), photo = model.photos[color];
+  const label = color === "white" ? "白色" : "黑色";
+  const caption = document.querySelector(".model small");
+  const images = list(".photo img,.map-inner img");
+  for (const input of list("input[name=shell-color]")) input.checked = input.value === color;
+  for (const img of images) if (img.dataset.model !== modelId) img.hidden = true;
+  caption.textContent = model.sensor + " ／ " + label + "載入中";
+  const load = new Image();
+  pendingShellPhoto = load;
+  load.referrerPolicy = "no-referrer";
+  const localSrc = new URL("assets/" + photo.file, document.baseURI).href;
+  load.onload = () => {
+    if (pendingShellPhoto !== load) return;
+    for (const [i,img] of images.entries()) {
+      img.referrerPolicy = "no-referrer";
+      img.alt = label + " " + model.name + (i ? " 按鍵位置示意" : " 型號外觀示意");
+      img.dataset.model = modelId;
+      img.dataset.shell = color;
+      img.src = load.src;
+      img.hidden = false;
+    }
+    caption.textContent = model.sensor + " ／ " + label + "示意";
+  };
+  load.onerror = () => {
+    if (pendingShellPhoto !== load) return;
+    if (load.src === localSrc) {
+      load.src = photo.url;
+    } else {
+      for (const img of images) img.hidden = true;
+      caption.textContent = model.sensor + " ／ " + label + "圖片無法載入";
+    }
+  };
+  load.src = localSrc;
+}
 
 function identifyInterface(devices) {
   const candidates = Object.entries(mouseModels).filter(([,m]) => devices.some(d => m.driver.filters.some(f =>
@@ -48,16 +99,7 @@ function showModel(id) {
   const poster = document.querySelector(".model");
   poster.querySelector("h1").textContent = model.name;
   poster.querySelector("span").textContent = model.description;
-  poster.querySelector("small").textContent = model.sensor + (id === "aj199" ? " ／ 霧白示意" : " ／ 外觀示意");
-  for (const [i,img] of list(".photo img,.map-inner img").entries()) {
-    img.alt = model.name + (i ? " 按鍵位置示意" : " 型號外觀示意");
-    img.referrerPolicy = "no-referrer";
-    img.onerror = () => {
-      img.onerror = null;
-      img.src = model.photoUrl;
-    };
-    img.src = "assets/" + model.photo;
-  }
+  showShellColor(preferredShell(id));
   bands[0] = model.step;
   bands[bands.length-1] = model.maxDpi;
   for (const a of ["x","y"]) {

@@ -1,5 +1,11 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AJAZZ 滑鼠設定</title><link rel="stylesheet" href="preview/style.css"><link rel="stylesheet" href="style.css"></head>
-<body class="disconnected"><main><header class="bar"><div class="brand"><b>AJAZZ</b><span>滑鼠設定</span></div><div class="tools"><label id="model-picker" hidden>預覽型號 <select id="model-select"></select></label><a id="mode-link" href="?mode=demo">試用模擬</a><button id="refresh" hidden>重新讀取</button><button id="disconnect" hidden>中斷連接</button><button id="play" hidden>▷ 播放操作示範</button></div></header>
+<body class="disconnected"><main><header class="bar"><div class="brand"><b>AJAZZ</b><span>滑鼠設定</span></div><div class="tools"><label id="model-picker" hidden>預覽型號 <select id="model-select"></select></label>
+<div class="shell-picker" role="group" aria-labelledby="shell-title">
+  <span id="shell-title">機身顏色</span>
+  <label><input type="radio" name="shell-color" value="white"><span><i aria-hidden="true"></i>白色</span></label>
+  <label><input type="radio" name="shell-color" value="black"><span><i aria-hidden="true"></i>黑色</span></label>
+</div>
+<a id="mode-link" href="?mode=demo">試用模擬</a><button id="refresh" hidden>重新讀取</button><button id="disconnect" hidden>中斷連接</button><button id="play" hidden>▷ 播放操作示範</button></div></header>
 <div class="layout"><aside class="device"><div class="poster"><div class="plate"></div><div class="product"><div class="photo"><img alt="白色 AJ199 滑鼠俯視照"><i class="wheel"></i></div></div><div class="model"><span>雙模電競滑鼠</span><h1>AJ199</h1><small>霧白 ／ PAW3395</small></div></div>
 <section class="live"><div class="row"><h2>裝置讀值</h2><span class="chip" id="device-status">未連接</span></div><div class="slot-read"><i></i><b id="live-stage"></b><span id="live-light"></span></div><dl class="meters"><div><dt>水平 DPI</dt><dd id="live-x"></dd></div><div><dt>垂直 DPI</dt><dd id="live-y"></dd></div><div><dt>回報率 Hz</dt><dd id="live-rate"></dd></div></dl>
 <dl class="facts"><div><dt>連線方式</dt><dd id="transport">—</dd></div><div><dt>電池</dt><dd id="battery">—</dd></div></dl>

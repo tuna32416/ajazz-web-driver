@@ -120,6 +120,22 @@ button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible
 
 #model-picker { display:inline-flex; align-items:center; gap:8px; font-size:14px; }
 #model-select { min-height:36px; padding:4px 8px; border:1px solid var(--line); border-radius:5px; background:var(--paper); color:var(--ink); }
+.shell-picker { display:inline-flex; align-items:center; gap:2px; white-space:nowrap; color:var(--ink); }
+#shell-title { margin-inline-end:6px; font-size:14px; }
+.shell-picker label { position:relative; cursor:pointer; }
+.shell-picker input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
+.shell-picker label span { display:flex; align-items:center; justify-content:center; gap:6px; min-height:44px; padding:4px 9px; border:1px solid transparent; border-radius:6px; font-size:14px; }
+.shell-picker i { width:14px; height:14px; border:1px solid #8a918b; border-radius:50%; background:#fff; }
+.shell-picker [value="black"] + span i { background:#242725; }
+.shell-picker input:checked + span { border-color:var(--ink); background:var(--paper); font-weight:700; }
+.shell-picker input:focus-visible + span { outline:2px solid var(--accent-dark); outline-offset:2px; }
+.shell-picker label:hover span { background:var(--paper); }
+.photo:has(img[hidden]) .wheel, .map-inner:has(img[hidden]) #hotspots { visibility:hidden; }
+/* The transparent white AJ179 photos fill their source height. Align them to
+   the same 12–88% vertical span as the black photos and the button hotspots. */
+body[data-model^="aj179"] :is(.photo,.map-inner) img[data-shell="white"] {
+  position:absolute; top:12%; left:0; width:100%; height:76%; object-fit:contain; clip-path:none;
+}
 .supported-models { color:var(--sub); }
 body[data-model^="aj179"] .model h1 { font-size:clamp(32px,3.25vw,64px); letter-spacing:-.07em; }
 body[data-model^="aj179"] .photo { top:58%; width:min(116cqw,114cqh); }
