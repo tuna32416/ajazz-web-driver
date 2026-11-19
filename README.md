@@ -43,6 +43,8 @@
 
 頁面會依裝置回報的型號選擇通訊協定與產品照。在頁首的「機身顏色」選擇白色或黑色，首頁照片與按鍵位置圖會一起換色。這項外觀偏好由瀏覽器依型號記住，模擬與實機模式共用。滾輪燈色仍由 DPI 檔位與燈效設定控制。六鍵配置也儲存在目前瀏覽器，各型號分開管理。
 
+滑鼠圖左下角列出感應器、最高靈敏度與目前連線的回報率上限。點「詳細規格」可查看重量、尺寸、電池容量及各連線的上限，窄螢幕可從頁首開啟。AJ179 PRO 使用 USB 時可選到 1,000 Hz，2.4 GHz 可選到 8,000 Hz，藍牙固定 125 Hz。模擬模式預設為 2.4 GHz，可在「裝置讀值 → 連線方式」切換比較。規格來源見 [AJ199 產品頁](https://epomaker.es/products/ajazz-aj199)、[AJ179 PRO 使用說明書](https://drv.dns-shop.ru/drivers/oth/M/mys-besprovodnaaprovodnaa-ajazz-aj179-pro_instrukcia_212912_12032026.pdf) 與 [AJ179 V2 MAX 使用說明書](https://manuals.plus/ajazz/aj179v2-max-max-tri-mode-game-mouse-manual)。
+
 ## 在本機使用
 
 需要 Python 3 和支援 WebHID 的桌面版 Chrome 或 Edge。下載專案後，在含有 `index.html` 的目錄啟動靜態伺服器。

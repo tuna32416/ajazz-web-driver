@@ -4,6 +4,7 @@
 const AJ179Pro = (() => {
   const h = AJ179HID;
   const transport = device => ({0x402d:"radio", 0x4026:"usb", 0x402c:"ble"})[device.productId];
+  const maxRates = {usb:1000, radio:8000, ble:125};
   const filters = [0x402d,0x4026,0x402c].map(productId => ({vendorId:0x3151, productId,
     usagePage:productId === 0x402c ? 0xff55 : 0xffff, usage:productId === 0x402c ? 0x202 : 2}));
   function interfaces(devices) {
@@ -101,12 +102,13 @@ const AJ179Pro = (() => {
   }
   async function write(link, now, {settings, slots, keys}) {
     if (Object.keys(settings).length) {
+      const medium = transport(link.command);
       const packet = now.raw.option.slice();
       packet.fill(0,0,8); packet[0] = 0x53; packet[17] = 255; packet[18] = 8;
       for (const [k,v] of Object.entries(settings)) {
         switch (k) {
           case "rate":
-            if (!Object.hasOwn(rates,v) || (transport(link.command) === "usb" && v > 1000)) throw new Error("此連線不支援這個回報率。");
+            if (medium === "ble" || !Object.hasOwn(rates,v) || v > maxRates[medium]) throw new Error("此連線不支援這個回報率。");
             packet[9] = rates[v]; break;
           case "lod": packet[52] = h.number(v,1,2)-1; break;
           case "debounce": packet[10] = h.number(v,0,10); break;
@@ -148,5 +150,5 @@ const AJ179Pro = (() => {
     if (transport(link.command) === "radio") { await feature(link,[0xf6,5]); await h.wait(50); }
     return h.number((await command(link,[0xd4]))[2],0,7);
   }
-  return h.driver("aj179-pro",filters,interfaces,read,write,activeStage);
+  return {...h.driver("aj179-pro",filters,interfaces,read,write,activeStage), transport, maxRates};
 })();

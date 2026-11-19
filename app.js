@@ -28,7 +28,9 @@ function renderDeviceUI() {
   $("undo").disabled = !snapshot || busy || !undoState;
   for (const panel of list(".page")) panel.inert = !snapshot || busy;
   $("device-status").textContent = snapshot ? "已連接" : link ? "等待讀值" : "未連接";
-  $("transport").textContent = link ? transportLabel(link.command.productId) : "—";
+  const medium = linkTransport(link);
+  $("transport").textContent = {radio:"2.4 GHz 接收器", usb:"USB 有線", ble:"藍牙"}[medium] || "—";
+  updateRateLimit();
   const battery = snapshot?.battery;
   $("battery").textContent = battery?.percent == null ? "—" : battery.percent + "%" + (battery.charging ? " · 充電中" : "");
   const seconds = snapshot?.lightIdleSeconds;
@@ -280,6 +282,10 @@ function setupDeviceUI() {
   $("pairing").hidden = simulation;
   for (const [id,model] of Object.entries(mouseModels)) $("model-select").add(new Option(model.name, id));
   $("model-picker").hidden = !simulation;
+  for (const button of list('[aria-controls="spec-dialog"]')) {
+    button.onclick = () => $("spec-dialog").showModal();
+  }
+  for (const tag of list("#spec-connections small")) tag.textContent = simulation ? "模擬" : "目前連線";
   $("model-select").onchange = event => {
     const url = new URL(location.href);
     url.searchParams.set("model",event.target.value);
@@ -296,7 +302,14 @@ function setupDeviceUI() {
   if (simulation) {
     $("mode-link").href = location.pathname;
     $("mode-link").textContent = "連接真實滑鼠";
-    $("transport").textContent = "2.4 GHz 模擬";
+    const transportSelect = $("demo-transport");
+    for (const medium of Object.keys(currentModel().maxRates)) {
+      transportSelect.add(new Option(connectionNames[medium] + " 模擬", medium));
+    }
+    transportSelect.value = "radio";
+    transportSelect.onchange = updateRateLimit;
+    transportSelect.hidden = false;
+    $("transport").hidden = true;
     $("battery").textContent = "模擬供電";
     $("device-status").textContent = "模擬裝置";
     $("light-idle-time").textContent = "5 分鐘";

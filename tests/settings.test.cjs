@@ -11,6 +11,33 @@ const AJ199 = vm.runInNewContext(source + "\nAJ199", {
   setTimeout, clearTimeout, navigator: { locks: { request: (_key, _options, run) => run() } }
 });
 
+test("AJ179 PRO rejects Bluetooth rate edits and USB rates above 1 kHz before sending", async () => {
+  const proSource = readFileSync(path.join(__dirname, "..", "aj179-pro.js"), "utf8");
+  const pro = vm.runInNewContext(proSource + "\nAJ179Pro", {
+    AJ179HID: {driver: (_id, _filters, _interfaces, _read, write) => ({write}), wait: async () => {}}
+  });
+  const sent = [];
+  const device = {
+    productId: 0x402c,
+    sendReport: async (_id, packet) => sent.push(packet),
+    sendFeatureReport: async (_id, packet) => sent.push(packet)
+  };
+  const option = new Uint8Array(64);
+  option[9] = 129; // The shared profile can still contain the 8 kHz receiver setting on Bluetooth.
+  const link = {command: device, signal: new AbortController().signal};
+  const write = settings => pro.write(link, {raw: {option}}, {settings, slots: [], keys: []});
+  await assert.rejects(write({rate: 8000}), /不支援這個回報率/);
+  await assert.rejects(write({rate: 125}), /不支援這個回報率/);
+  device.productId = 0x4026;
+  await assert.rejects(write({rate: 2000}), /不支援這個回報率/);
+  assert.equal(sent.length, 0);
+  await write({rate: 1000});
+  assert.equal(sent[0][9], 1);
+  device.productId = 0x402c;
+  await write({snap: true});
+  assert.equal(sent[1][10], 129); // Bluetooth wraps the settings packet with a one-byte prefix.
+});
+
 function receiver({ dropAck = false, ignoreRate = false, power = [80, 1] } = {}) {
   const memory = new Uint8Array(0xb3);
   memory.set([2, 0x53, 1, 0x54, 1, 0x54]); // One enabled stage; hardware slot 1 is active.

@@ -48,7 +48,8 @@ function previewMovement(event) {
   flushSample();
  } else if (sampleTimer === undefined) {
   // Model report boundaries in the preview. Browser timers do not measure USB timing.
-  const period = 1000 / confirmed.rate;
+  const limit = currentModel().maxRates[currentTransport()];
+  const period = 1000 / Math.min(confirmed.rate, limit ?? confirmed.rate);
   sampleTimer = setTimeout(flushSample, period - performance.now() % period);
  }
 }
@@ -210,7 +211,7 @@ function chooseSlot(i,manual){edit=i;if(manual)follow=false;if(modelId!=="aj179-
 function cycle(){if(!simulation)return;if(confirmTimer)acknowledge();live=(live+1)%state.count;confirmedLive=live;if(follow)chooseSlot(live,false);else render()}
 function syncStatus(){
  if(!simulation){renderDeviceUI();return}
- keyProfiles.render();updateModelOptions();
+ keyProfiles.render();updateRateLimit();updateModelOptions();
  const busy=!!confirmTimer;$("sync-status").textContent=busy?"模擬同步中":"模擬已讀回";$("sync-status").parentElement.classList.toggle("busy",busy);notify(last);$("undo").disabled=!undoState;
 }
 function render(){
@@ -224,7 +225,7 @@ function render(){
   readout.dataset.slot=slotId;
  }
  $("live-stage").textContent="第 "+(confirmedLive+1)+" 檔使用中";$("live-light").textContent="· 滾輪燈"+(lampNames[confirmed.mode] ?? "未提供");document.querySelector(".slot-read i").style.background=confirmed.mode==="off"?"transparent":cur.color;
- $("live-x").textContent=cur.x;$("live-y").textContent=cur.y;$("live-rate").textContent=confirmed.rate;
+ $("live-x").textContent=cur.x;$("live-y").textContent=cur.y;
  press($("follow"),follow);$("stage-count").textContent=state.count+" / "+Math.max(state.count,currentModel().stages)+" 檔";
  $("add-stage").disabled=state.count===initial.slots.length;
  $("remove-stage").disabled=state.count===1;
@@ -253,7 +254,7 @@ function render(){
   row.style.setProperty("--pos",position/60+"%");
  }
  $("preset-label").textContent=split[edit]?axis.toUpperCase()+" 軸快選":"常用 DPI";list("#presets button").forEach(b=>press(b,+b.value===s[axis]));$("color").value=s.color || "#000000";$("color").title=s.color?.toUpperCase() || "裝置未回報燈色";
- list("#rate button").forEach(b=>press(b,+b.value===state.rate));list("#modes button").forEach(b=>press(b,b.value===state.mode));
+ list("#modes button").forEach(b=>press(b,b.value===state.mode));
  for(let i=0;i<6;i++){press($("hot-"+i),key===i);press($("key-"+i),key===i);$("key-"+i).querySelector("small").textContent=state.keys[i] ?? "其他指派"}
  $("action-label").textContent=names[key]+"的功能";$("key-action").value=state.keys[key] ?? "";for(const opt of $("key-action").options)opt.disabled=!opt.value || opt.value!=="左鍵點擊"&&state.keys[key]==="左鍵點擊"&&state.keys.filter(v=>v==="左鍵點擊").length===1;
  list("#lod button").forEach(b=>press(b,+b.value===state.lod));for(const k of ["ripple","snap"]){press($(k),state[k]);$(k).querySelector("span").textContent=state[k]?"開啟":"關閉"}

@@ -5,10 +5,19 @@
   <label><input type="radio" name="shell-color" value="white"><span><i aria-hidden="true"></i>白色</span></label>
   <label><input type="radio" name="shell-color" value="black"><span><i aria-hidden="true"></i>黑色</span></label>
 </div>
+<button class="mobile-specs" aria-haspopup="dialog" aria-controls="spec-dialog">詳細規格</button>
 <a id="mode-link" href="?mode=demo">試用模擬</a><button id="refresh" hidden>重新讀取</button><button id="disconnect" hidden>中斷連接</button><button id="play" hidden>▷ 播放操作示範</button></div></header>
-<div class="layout"><aside class="device"><div class="poster"><div class="plate"></div><div class="product"><div class="photo"><img alt="白色 AJ199 滑鼠俯視照"><i class="wheel"></i></div></div><div class="model"><span>雙模電競滑鼠</span><h1>AJ199</h1><small>霧白 ／ PAW3395</small></div></div>
-<section class="live"><div class="row"><h2>裝置讀值</h2><span class="chip" id="device-status">未連接</span></div><div class="slot-read"><i></i><b id="live-stage"></b><span id="live-light"></span></div><dl class="meters"><div><dt>水平 DPI</dt><dd id="live-x"></dd></div><div><dt>垂直 DPI</dt><dd id="live-y"></dd></div><div><dt>回報率 Hz</dt><dd id="live-rate"></dd></div></dl>
-<dl class="facts"><div><dt>連線方式</dt><dd id="transport">—</dd></div><div><dt>電池</dt><dd id="battery">—</dd></div></dl>
+<div class="layout"><aside class="device"><div class="poster"><div class="plate"></div><div class="product"><div class="photo"><img alt="白色 AJ199 滑鼠俯視照"><i class="wheel"></i></div></div><div class="model"><span>雙模電競滑鼠</span><h1>AJ199</h1><small>白色機身</small></div>
+  <div class="poster-specs">
+    <dl aria-label="型號規格">
+      <div><dt>感應器</dt><dd id="spec-sensor"></dd></div>
+      <div><dt>最高靈敏度</dt><dd id="spec-dpi"></dd></div>
+      <div><dt>最高回報率</dt><dd id="spec-rate"></dd></div>
+    </dl>
+    <button aria-haspopup="dialog" aria-controls="spec-dialog">詳細規格 <span aria-hidden="true">＋</span></button>
+  </div></div>
+<section class="live"><div class="row"><h2>裝置讀值</h2><span class="chip" id="device-status">未連接</span></div><div class="slot-read"><i></i><b id="live-stage"></b><span id="live-light"></span></div><dl class="meters"><div><dt>水平 DPI</dt><dd id="live-x"></dd></div><div><dt>垂直 DPI</dt><dd id="live-y"></dd></div><div><dt id="live-rate-label">回報率 Hz</dt><dd id="live-rate"></dd></div></dl>
+<dl class="facts"><div><dt>連線方式</dt><dd><span id="transport">—</span><select id="demo-transport" aria-label="模擬連線方式" hidden></select></dd></div><div><dt>電池</dt><dd id="battery">—</dd></div></dl>
 <button id="cycle">模擬按下 DPI 鍵 <b>↻</b></button></section></aside>
 <section class="console"><div id="pairing">
  <h2>連接你的 AJAZZ 滑鼠</h2><p id="connection-hint" role="status">插上 USB 資料線或 2.4 GHz 接收器，開啟滑鼠後選擇裝置。</p>
@@ -56,6 +65,24 @@
 <dl class="setting"><dt>燈光閒置節能時間</dt><dd id="light-idle-time">未提供</dd></dl>
 </section></div></div>
 <footer><div class="status"><span id="sync-status" role="status"></span><small id="last"></small></div><button id="undo">↶ 復原上一步</button></footer></section></div></main>
+<dialog id="spec-dialog" aria-labelledby="spec-title">
+  <div class="row"><h2 id="spec-title">詳細規格</h2><form method="dialog"><button autofocus>關閉</button></form></div>
+  <dl class="spec-list">
+    <div><dt>感應器</dt><dd id="detail-sensor"></dd></div>
+    <div><dt>最高靈敏度</dt><dd id="detail-dpi"></dd></div>
+    <div><dt>重量</dt><dd id="spec-weight"></dd></div>
+    <div><dt>尺寸（長 × 寬 × 高）</dt><dd id="spec-size"></dd></div>
+    <div><dt>電池容量</dt><dd id="spec-battery"></dd></div>
+  </dl>
+  <h3>各連線的最高回報率</h3>
+  <dl id="spec-connections" class="spec-list">
+    <div data-transport="usb"><dt>USB 有線 <small hidden></small></dt><dd></dd></div>
+    <div data-transport="radio"><dt>2.4 GHz 接收器 <small hidden></small></dt><dd></dd></div>
+    <div data-transport="ble"><dt>藍牙 <small hidden></small></dt><dd></dd></div>
+  </dl>
+  <p id="spec-max-ble-note" hidden>藍牙固定 125 Hz。本網頁支援以 USB 或 2.4 GHz 設定此型號。</p>
+  <a id="spec-source" target="_blank" rel="noopener noreferrer">查看產品規格來源</a>
+</dialog>
 <dialog id="profile-dialog" aria-labelledby="profile-title"><form id="profile-form">
   <h2 id="profile-title">儲存按鍵配置</h2>
   <p>配置保存在這個瀏覽器。點選配置即可切換六個按鍵的指派。</p>
