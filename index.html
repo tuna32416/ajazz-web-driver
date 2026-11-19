@@ -1,0 +1,62 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AJAZZ 滑鼠設定</title><link rel="stylesheet" href="preview/style.css"><link rel="stylesheet" href="style.css"></head>
+<body class="disconnected"><main><header class="bar"><div class="brand"><b>AJAZZ</b><span>滑鼠設定</span></div><div class="tools"><label id="model-picker" hidden>預覽型號 <select id="model-select"></select></label><a id="mode-link" href="?mode=demo">試用模擬</a><button id="refresh" hidden>重新讀取</button><button id="disconnect" hidden>中斷連接</button><button id="play" hidden>▷ 播放操作示範</button></div></header>
+<div class="layout"><aside class="device"><div class="poster"><div class="plate"></div><div class="product"><div class="photo"><img alt="白色 AJ199 滑鼠俯視照"><i class="wheel"></i></div></div><div class="model"><span>雙模電競滑鼠</span><h1>AJ199</h1><small>霧白 ／ PAW3395</small></div></div>
+<section class="live"><div class="row"><h2>裝置讀值</h2><span class="chip" id="device-status">未連接</span></div><div class="slot-read"><i></i><b id="live-stage"></b><span id="live-light"></span></div><dl class="meters"><div><dt>水平 DPI</dt><dd id="live-x"></dd></div><div><dt>垂直 DPI</dt><dd id="live-y"></dd></div><div><dt>回報率 Hz</dt><dd id="live-rate"></dd></div></dl>
+<dl class="facts"><div><dt>連線方式</dt><dd id="transport">—</dd></div><div><dt>電池</dt><dd id="battery">—</dd></div></dl>
+<button id="cycle">模擬按下 DPI 鍵 <b>↻</b></button></section></aside>
+<section class="console"><div id="pairing">
+ <h2>連接你的 AJAZZ 滑鼠</h2><p id="connection-hint" role="status">插上 USB 資料線或 2.4 GHz 接收器，開啟滑鼠後選擇裝置。</p>
+ <small class="supported-models">AJ199 ・ AJ179 PRO ・ AJ179 V2 MAX（兩款 AJ179 待實機驗證）</small><button id="connect">連接滑鼠</button><a href="?mode=demo">先試用模擬</a>
+ </div><div class="tabs" role="group" aria-label="設定頁"><button data-page="common">常用設定</button><button data-page="keys">按鍵指派</button><button data-page="advanced">進階調校</button></div>
+<div class="page" id="common"><section class="stages"><div class="row stage-head">
+<div class="headline"><h2>DPI 檔位</h2><span id="stage-count" aria-live="polite"></span></div>
+<div class="subactions"><button id="follow" class="switch" role="switch" aria-checked="true"><i aria-hidden="true"></i>跟隨滑鼠切檔</button>
+<div class="stage-tools"><button id="add-stage"><b aria-hidden="true">＋</b>新增檔位</button><button id="remove-stage"><b aria-hidden="true">−</b><span></span></button></div></div></div><div id="stage-list" role="group" aria-label="選擇編輯檔位"></div></section>
+<section class="sensitivity"><div class="row"><div class="headline"><h2>靈敏度</h2><small id="editing"></small></div><div class="seg" id="axes-mode" role="group" aria-label="軸向模式"><button value="sync">X/Y 同步</button><button value="split">分開調整</button></div></div><div id="axes"></div><div class="preset-row"><span id="preset-label"></span><div id="presets" role="group" aria-labelledby="preset-label"></div></div></section>
+<div class="lower"><section><h2>回報率</h2><div class="seg rate" id="rate" role="group" aria-label="回報率"><button value="125">125</button><button value="250">250</button><button value="500">500</button><button value="1000">1000</button><button value="2000" hidden>2K</button><button value="4000" hidden>4K</button><button value="8000" hidden>8K</button></div><small id="rate-note">Hz · 全部檔位</small></section><section><div class="row"><h2 id="led-title">滾輪燈</h2><label class="color" for="color"><input type="color" id="color"><span>本檔燈色</span></label></div><div class="seg" id="modes" role="group" aria-label="燈效模式"><button value="off">關閉</button><button value="steady">恆亮</button><button value="breathing">呼吸</button></div><small id="light-note">燈效模式 · 全部檔位</small></section></div></div>
+<div class="page" id="keys" hidden><div class="row"><h2>按鍵指派</h2><small id="key-profile-status" role="status"></small></div>
+<div class="profile-bar">
+  <div id="key-profiles" role="group" aria-label="快速切換按鍵配置"></div>
+  <div class="profile-tools"><button id="profile-new">＋ 儲存目前配置</button><button id="profile-manage">管理配置</button></div>
+</div>
+<div class="mapping"><div class="map-picture"><div class="map-inner"><img alt="白色 AJ199 六個按鍵位置"><div id="hotspots"></div></div></div><div class="map-fields"><div class="key-list" id="key-list"></div><label for="key-action" id="action-label">指定功能</label><select id="key-action"></select></div></div></div>
+<div class="page" id="advanced" hidden><div class="tuning-grid">
+<section class="tracking"><div class="row"><h2>移動追蹤</h2><small class="local-label">頁面預覽</small></div>
+ <div class="setting"><div><strong>移動同步</strong><small id="motion-hint">預覽區依回報週期取樣</small></div>
+  <button class="switch" role="switch" aria-label="移動同步" aria-describedby="motion-hint" id="motion-sync"><i></i><span></span></button>
+ </div>
+ <div class="angle-setting">
+  <div class="row"><label for="grip-angle"><strong>握姿角度補償</strong></label><output id="angle-value" for="grip-angle">0°</output></div>
+  <small id="angle-hint">點選刻度或拖曳指針，方向鍵可微調 1°。</small>
+  <div class="angle-instruments">
+   <div class="angle-dial">
+    <input type="range" id="grip-angle" min="-30" max="30" step="1" value="0" aria-describedby="angle-hint">
+    <svg id="dial-face" viewBox="-150 -137 300 154" aria-hidden="true" focusable="false">
+     <path class="dial-base" d="M-95 0 H95"/>
+     <path class="dial-ring" d="M-93 0 A93 93 0 0 1 93 0"/>
+     <g id="dial-ticks"></g>
+     <g id="dial-pointer"><path d="M-3 0 L-1.2 -90 Q0 -95 1.2 -90 L3 0Z"/><circle cy="-93" r="4"/></g>
+     <circle class="dial-hub" r="6"/>
+    </svg>
+   </div>
+   <div id="angle-pad" role="img" aria-label="角度示意"><i class="baseline"></i><i class="vector"></i><i class="origin"></i><i class="sample" hidden></i><span>移動方向預覽</span></div>
+  </div>
+  <button class="zero" id="angle-zero" type="button">歸零</button>
+ </div>
+</section>
+<section class="other-settings"><h2>感應器與按鍵</h2><div class="setting"><div><strong>抬升高度（LOD）</strong><small>抬起滑鼠後，感應器停止追蹤的高度</small></div><div class="seg" id="lod" role="group" aria-label="抬升高度"><button value="1">1 mm</button><button value="2">2 mm</button></div></div>
+<div class="setting"><div><strong>波紋控制</strong><small>平滑高 DPI 下的細微抖動</small></div><button class="switch" role="switch" aria-label="波紋控制" id="ripple"><i></i><span></span></button></div><div class="setting"><div><strong>直線修正</strong><small>協助游標沿直線移動</small></div><button class="switch" role="switch" aria-label="直線修正" id="snap"><i></i><span></span></button></div><div class="setting"><div><strong>按鍵去抖時間</strong><small>調整過濾重複點擊的時間</small></div><label><input type="number" id="debounce" min="0" max="30" step="1" aria-label="按鍵去抖毫秒"> ms</label></div>
+<h2 class="lighting-title">燈光</h2><div class="setting"><label for="brightness"><strong>滾輪燈亮度</strong></label><div class="range-option"><input type="range" id="brightness" min="10" max="100" step="10" aria-label="燈光亮度"><output for="brightness" id="bright-value"></output></div></div><div class="setting"><label for="speed"><strong>呼吸速度</strong><small>呼吸燈模式下可調整</small></label><select id="speed"></select></div>
+<dl class="setting"><dt>燈光閒置節能時間</dt><dd id="light-idle-time">未提供</dd></dl>
+</section></div></div>
+<footer><div class="status"><span id="sync-status" role="status"></span><small id="last"></small></div><button id="undo">↶ 復原上一步</button></footer></section></div></main>
+<dialog id="profile-dialog" aria-labelledby="profile-title"><form id="profile-form">
+  <h2 id="profile-title">儲存按鍵配置</h2>
+  <p>配置保存在這個瀏覽器。點選配置即可切換六個按鍵的指派。</p>
+  <label id="profile-picker-label">選擇配置<select id="profile-picker"></select></label>
+  <label>配置名稱<input id="profile-name" type="text" maxlength="32" required autocomplete="off" placeholder="例如：工作"></label>
+  <div id="profile-maintenance"><button id="profile-update" type="button">以目前六鍵更新</button><button id="profile-delete" type="button">刪除配置</button></div>
+  <p id="profile-error" role="alert" hidden></p>
+  <div class="profile-dialog-actions"><button id="profile-cancel" type="button">取消</button><button id="profile-save" type="submit">儲存</button></div>
+</form></dialog>
+<script src="aj199.js"></script><script src="aj179-hid.js"></script><script src="aj179-pro.js"></script><script src="aj179-v2-max.js"></script><script src="models.js"></script><script src="app.js"></script><script src="key-profiles.js"></script><script src="preview/app.js"></script></body></html>
